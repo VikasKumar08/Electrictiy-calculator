@@ -1,0 +1,128 @@
+
+
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'APP'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title});
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final TextEditingController rentController = TextEditingController();
+  final TextEditingController unitController = TextEditingController();
+  final TextEditingController rateController = TextEditingController();
+  var result = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Electricity Calculator",
+                style: TextStyle(fontSize: 32, fontWeight: FontWeight.w800, color: Colors.lightBlue),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: rentController,
+                decoration: InputDecoration(
+                  labelText: 'Rent',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(21)),
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: unitController,
+                decoration: InputDecoration(
+                  labelText: 'Unit',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(21)),
+                ),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: rateController,
+                decoration: InputDecoration(
+                  labelText: 'Unit Rate',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(21)),
+                ),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  calculateTotal();
+                },
+                child: Text(
+                  "Calculate",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                result,
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500, color: Colors.black),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void calculateTotal() {
+    var rt = rentController.text;
+    var ut = unitController.text;
+    var ra = rateController.text;
+
+    if (rt.isNotEmpty && ut.isNotEmpty && ra.isNotEmpty) {
+      var rt1 = int.tryParse(rt) ?? 0;
+      var ut1 = int.tryParse(ut) ?? 0;
+      var ra1 = int.tryParse(ra) ?? 0;
+      var total = (ut1 * ra1) + rt1;
+      setState(() {
+        result = "The total rent is $total /-";
+      });
+    } else {
+      setState(() {
+        result = "Please fill all the details";
+      });
+    }
+  }
+}
+
+
